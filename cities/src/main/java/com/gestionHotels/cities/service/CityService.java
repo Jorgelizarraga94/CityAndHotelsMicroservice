@@ -1,10 +1,12 @@
 package com.gestionHotels.cities.service;
 
 import com.gestionHotels.cities.dto.CityDTO;
+import com.gestionHotels.cities.dto.HotelDTO;
 import com.gestionHotels.cities.model.City;
 import com.gestionHotels.cities.repository.IHotelAPI;
 import com.netflix.discovery.converters.Auto;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class CityService implements ICityService{
     List<City> cityList = new ArrayList<>();
     @Override
     @CircuitBreaker(name="hotels", fallbackMethod = "fallbackGetCitiesHotel")
+    @Retry(name="hotels")
     public CityDTO getcitiesHotels(String name, String country) {
         City city = this.findCity(name,country);
 
@@ -30,7 +33,10 @@ public class CityService implements ICityService{
         cityDTO.setCountry(city.getCountry());
         cityDTO.setState(city.getState());
 
+
         cityDTO.setHotelList(hotelAPI.getHotels(city.getId()));
+
+        createException();
 
         return cityDTO;
     }
@@ -50,5 +56,13 @@ public class CityService implements ICityService{
         cityList.add(new City(1L,"Buenos Aires","American", "Argentina", "Buenos Aires"));
         cityList.add(new City(2L,"Santiago De Chile","American", "Chile", "Santiago"));
         cityList.add(new City(3L,"Montevideo","American", "Uruguay", "Maldonado"));
+    }
+
+    public CityDTO fallbackGetCitiesHotel(Throwable throwable){
+        return new CityDTO(99999L, "Fallido", "Fallido", "Fallido", "Fallido",null);
+    }
+
+    public void createException(){
+        throw new RuntimeException("error");
     }
 }
