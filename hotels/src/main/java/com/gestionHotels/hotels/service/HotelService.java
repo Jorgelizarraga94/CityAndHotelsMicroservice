@@ -9,23 +9,27 @@ import java.util.List;
 @Service
 public class HotelService implements IHotelService{
 
-    List<Hotel> hotelList=new ArrayList<>();
+    List<Hotel> hotelList;
+
     @Override
     public List<Hotel> getHotelsByCityId(Long city_id) {
-        List<Hotel> hotelCityList = new ArrayList<>();
 
+        List<Hotel> hotelCityList = new ArrayList<>();
         this.loadHotels();
 
+        System.out.println(hotelList.size());
+
         for (Hotel hotel : hotelList){
-            if(hotel.getCity_id() == city_id){
+            if(hotel.getCity_id().equals(city_id)){
                 hotelCityList.add(hotel);
             }
         }
-
         return hotelCityList;
     }
 
     public void loadHotels(){
+        this.hotelList = new ArrayList<>();
+
         hotelList.add(new Hotel(1L,"paradise",5,1L));
         hotelList.add(new Hotel(2L,"sunset",5,1L));
         hotelList.add(new Hotel(3L,"south",4,2L));

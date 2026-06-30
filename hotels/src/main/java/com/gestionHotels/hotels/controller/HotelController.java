@@ -16,7 +16,7 @@ public class HotelController {
     @Autowired
     IHotelService servHotel;
 
-    @GetMapping("/{city_id")
+    @GetMapping("/{city_id}")
     public List<Hotel> getHotelsById(@PathVariable Long city_id){
         return servHotel.getHotelsByCityId(city_id);
     }
