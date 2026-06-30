@@ -17,7 +17,7 @@ public class CityService implements ICityService{
 
     List<City> cityList = new ArrayList<>();
     @Override
-    @CircuitBreaker(name="hotels", fallbackMethod = "fallbackGetCitiesHotel")
+    @CircuitBreaker(name="hotels-service", fallbackMethod = "fallbackGetCitiesHotel")
     public CityDTO getcitiesHotels(String name, String country) {
 
         City city = this.findCity(name,country);

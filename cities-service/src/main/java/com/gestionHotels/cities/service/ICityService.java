@@ -6,7 +6,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.stereotype.Service;
 
 @Service
-@CircuitBreaker(name = "hotels", fallbackMethod = "fallbackGetCitiesHotel")
+@CircuitBreaker(name = "hotels-service", fallbackMethod = "fallbackGetCitiesHotel")
 public interface ICityService {
     public CityDTO getcitiesHotels(String name, String country);
 }

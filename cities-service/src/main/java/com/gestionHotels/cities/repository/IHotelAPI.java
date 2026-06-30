@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient("hotels")
+@FeignClient("hotels-service")
 public interface IHotelAPI {
     @GetMapping("/hotels/{city_id}")
     public List<HotelDTO> getHotels(@PathVariable("city_id") Long city_id);
